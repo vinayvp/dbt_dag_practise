@@ -174,3 +174,4 @@ Navigate to `http://localhost:8080` (credentials: `admin` / `admin`). Trigger th
 - **Modern ELT Paradigms**: Loading raw data first and using in-warehouse transformation for speed and cost efficiency.
 - **Data Engineering Best Practices**: Separation of concerns (staging vs. intermediate vs. marts), DRY principles via macros, and automated testing before deployment.
 - **Enterprise-Grade Orchestration**: Production-ready pipeline orchestration avoiding monolithic scripts and utilizing containerized virtual environments with granular task-level monitoring.
+
