@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "Curated sales order fact table materialized incrementally with merge semantics."
+    columns:
+      - name: order_pk
+        description: "Surrogate primary key generated via dbt_utils."
+        tests:
+          - unique
+          - not_null
+
+      - name: order_key
+        description: "Natural transaction order key."
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: ref('stg_tpch_orders')
+              field: order_key
+              severity: warn
+
+      - name: customer_pk
+        description: "Surrogate foreign key referencing dim_customers."
+        tests:
+          - not_null
+
+      - name: customer_key
+        description: "Natural customer key."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_key
+
+      - name: status_code
+        description: "Order status code (O = Open, P = Processing, F = Fulfilled)."
+        tests:
+          - accepted_values:
+              values: ['P', 'O', 'F']
+
+  - name: dim_customers
+    description: "Conformed customer dimension enriched with geographic nation attributes."
+    columns:
+      - name: customer_pk
+        description: "Surrogate primary key generated via dbt_utils."
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_key
+        description: "Natural customer key."
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              to: ref('stg_tpch_customers')
+              field: customer_key
+
+      - name: nation_key
+        description: "Foreign key referencing source nation code."
+        tests:
+          - not_null

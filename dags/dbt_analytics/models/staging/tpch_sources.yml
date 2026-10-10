@@ -1,0 +1,66 @@
+version: 2
+
+sources:
+  - name: tpch
+    database: snowflake_sample_data
+    schema: tpch_sf1
+    description: "Raw TPC-H benchmark dataset hosted in Snowflake Sample Data."
+    freshness:
+      warn_after:
+        count: 24
+        period: hour
+      error_after:
+        count: 72
+        period: hour
+    loaded_at_field: o_orderdate
+    tables:
+      - name: orders
+        description: "Raw transactional sales orders."
+        columns:
+          - name: o_orderkey
+            description: "Primary key for orders."
+            tests:
+              - unique
+              - not_null
+          - name: o_custkey
+            description: "Customer foreign key."
+            tests:
+              - not_null
+
+      - name: lineitem
+        description: "Individual line item details for sales orders."
+        freshness:
+          warn_after:
+            count: 24
+            period: hour
+          error_after:
+            count: 72
+            period: hour
+        loaded_at_field: l_shipdate
+        columns:
+          - name: l_orderkey
+            description: "Foreign key referencing orders.o_orderkey."
+            tests:
+              - relationships:
+                  to: source('tpch', 'orders')
+                  field: o_orderkey
+
+      - name: customer
+        description: "Master customer demographic and account data."
+        freshness: null
+        columns:
+          - name: c_custkey
+            description: "Natural key for customers."
+            tests:
+              - unique
+              - not_null
+
+      - name: nation
+        description: "Geographic nation lookup table."
+        freshness: null
+        columns:
+          - name: n_nationkey
+            description: "Primary key for nations."
+            tests:
+              - unique
+              - not_null

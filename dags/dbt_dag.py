@@ -5,11 +5,11 @@ from pathlib import Path
 from cosmos import DbtDag, ExecutionConfig, ProfileConfig, ProjectConfig
 from cosmos.profiles import SnowflakeUserPasswordProfileMapping
 
-DBT_ROOT_PATH = Path(__file__).parent / "dbt_learn"
+DBT_ROOT_PATH = Path(__file__).parent / "dbt_analytics"
 AIRFLOW_HOME = os.environ.get("AIRFLOW_HOME", "/usr/local/airflow")
 
 profile_config = ProfileConfig(
-    profile_name="dbt_learn",
+    profile_name="dbt_analytics",
     target_name="dev",
     profile_mapping=SnowflakeUserPasswordProfileMapping(
         conn_id="snowflake_conn",
