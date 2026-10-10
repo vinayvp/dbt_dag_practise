@@ -2,7 +2,8 @@
     config(
         materialized='incremental',
         incremental_strategy='merge',
-        unique_key='order_key'
+        unique_key='order_key',
+        on_schema_change='sync_all_columns'
     )
 }}
 
@@ -20,6 +21,13 @@ with orders as (
     {% endif %}
 ),
 
+customers as (
+    select
+        customer_pk,
+        customer_key
+    from {{ ref('dim_customers') }}
+),
+
 order_item_summary as (
     select
         order_key,
@@ -30,7 +38,7 @@ order_item_summary as (
 
 select
     {{ dbt_utils.generate_surrogate_key(['orders.order_key']) }} as order_pk,
-    {{ dbt_utils.generate_surrogate_key(['orders.customer_key']) }} as customer_pk,
+    customers.customer_pk,
     orders.order_key,
     orders.customer_key,
     orders.status_code,
@@ -43,3 +51,6 @@ from
 join
     order_item_summary
         on orders.order_key = order_item_summary.order_key
+left join
+    customers
+        on orders.customer_key = customers.customer_key

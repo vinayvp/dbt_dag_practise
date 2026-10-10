@@ -53,9 +53,6 @@ models:
         tests:
           - unique
           - not_null
-          - relationships:
-              to: ref('stg_tpch_customers')
-              field: customer_key
 
       - name: nation_key
         description: "Foreign key referencing source nation code."

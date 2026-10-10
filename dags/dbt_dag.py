@@ -2,7 +2,8 @@ import os
 from datetime import datetime
 from pathlib import Path
 
-from cosmos import DbtDag, ExecutionConfig, ProfileConfig, ProjectConfig
+from cosmos import DbtDag, ExecutionConfig, ProfileConfig, ProjectConfig, RenderConfig
+from cosmos.constants import TestBehavior
 from cosmos.profiles import SnowflakeUserPasswordProfileMapping
 
 DBT_ROOT_PATH = Path(__file__).parent / "dbt_analytics"
@@ -21,6 +22,7 @@ dbt_snowflake_dag = DbtDag(
     project_config=ProjectConfig(DBT_ROOT_PATH),
     operator_args={"install_deps": True},
     profile_config=profile_config,
+    render_config=RenderConfig(test_behavior=TestBehavior.AFTER_ALL),
     execution_config=ExecutionConfig(
         dbt_executable_path=f"{AIRFLOW_HOME}/dbt_venv/bin/dbt"
     ),

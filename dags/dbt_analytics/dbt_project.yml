@@ -31,15 +31,14 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   dbt_analytics:
-    # Config indicated by + and applies to all files under models/example/
     staging:
-      materialized: view
-      snowflake_warehouse: dbt_wh
+      +materialized: view
+      +snowflake_warehouse: dbt_wh
     marts:
-      materialized: table
-      snowflake_warehouse: dbt_wh
+      +materialized: table
+      +snowflake_warehouse: dbt_wh
 
 snapshots:
   dbt_analytics:
-    target_schema: snapshots
-    snowflake_warehouse: dbt_wh
+    +target_schema: snapshots
+    +snowflake_warehouse: dbt_wh
