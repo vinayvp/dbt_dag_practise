@@ -139,8 +139,8 @@ flowchart LR
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/vinayvp/dbt_airflow_demo.git
-cd dbt_airflow_demo
+git clone https://github.com/vinayvp/snowflake-dbt-airflow-platform.git
+cd snowflake-dbt-airflow-platform
 ```
 
 ### 2. Configure Snowflake Connection
